@@ -185,10 +185,20 @@ func SetDDIAPI() func(*Client) {
 	return func(c *Client) { c.DDI = true }
 }
 
+type Param struct {
+	Key, Value string
+}
+
 // Do satisfies the Doer interface. resp will be nil if a non-HTTP error
 // occurs, otherwise it is available for inspection when the error reflects a
 // non-2XX response.
-func (c Client) Do(req *http.Request, v interface{}) (*http.Response, error) {
+func (c Client) Do(req *http.Request, v interface{}, params ...Param) (*http.Response, error) {
+	q := req.URL.Query()
+	for _, p := range params {
+		q.Set(p.Key, p.Value)
+	}
+	req.URL.RawQuery = q.Encode()
+
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
 		return nil, err
@@ -228,8 +238,8 @@ type NextFunc func(v *interface{}, uri string) (*http.Response, error)
 // Response is from the last URI visited - either the last page, or one that
 // responded with a non-2XX status. If a non-HTTP error occurs, resp will be
 // nil.
-func (c Client) DoWithPagination(req *http.Request, v interface{}, f NextFunc) (*http.Response, error) {
-	resp, err := c.Do(req, v)
+func (c Client) DoWithPagination(req *http.Request, v interface{}, f NextFunc, params ...Param) (*http.Response, error) {
+	resp, err := c.Do(req, v, params...)
 	if err != nil {
 		return resp, err
 	}
