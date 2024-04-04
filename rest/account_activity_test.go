@@ -40,7 +40,7 @@ func TestActivity(t *testing.T) {
 			},
 		}
 
-		t.Run("list all activity", func(t *testing.T) {
+		t.Run("list default activity", func(t *testing.T) {
 			defer mock.ClearTestCases()
 
 			require.Nil(t, mock.AddActivityListTestCase(nil, nil, activity))
@@ -68,6 +68,24 @@ func TestActivity(t *testing.T) {
 			require.NotNil(t, respActivity)
 			require.Equal(t, limit, len(respActivity))
 			require.Equal(t, activity[0], respActivity[0])
+		})
+
+		t.Run("list all dns record activity, multiple params", func(t *testing.T) {
+			defer mock.ClearTestCases()
+
+			limit := 1000
+			params := []api.Param{{Key: "limit", Value: fmt.Sprintf("%d", limit)}, {Key: "resource_type", Value: "record"}}
+
+			require.Nil(t, mock.AddActivityListTestCase(nil, nil, activity, params...))
+
+			respActivity, _, err := client.Activity.List(params...)
+			require.Nil(t, err)
+			require.NotNil(t, respActivity)
+			require.Equal(t, len(activity), len(respActivity))
+
+			for i := range activity {
+				require.Equal(t, activity[i], respActivity[i], i)
+			}
 		})
 	})
 }
