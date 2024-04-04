@@ -1,0 +1,19 @@
+package mockns1
+
+import (
+	"net/http"
+
+	"gopkg.in/ns1/ns1-go.v2/rest/model/account"
+)
+
+// AddActivityListTestCase sets up a test case for the api.Client.Activity.List()
+// function
+func (s *Service) AddActivityListTestCase(
+	requestHeaders, responseHeaders http.Header,
+	response []*account.Activity,
+) error {
+	return s.AddTestCase(
+		http.MethodGet, "/account/activity", http.StatusOK, requestHeaders,
+		responseHeaders, "", response,
+	)
+}
