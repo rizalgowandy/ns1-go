@@ -39,8 +39,12 @@ func (s *Service) AddTestCase(
 		uri = "/v1/" + uri
 	}
 
-	for _, p := range params {
-		uri = fmt.Sprintf("%s?%s=%s", uri, p.Key, p.Value)
+	if len(params) > 0 {
+		uri = fmt.Sprintf("%s?%s=%s", uri, params[0].Key, params[0].Value)
+
+		for _, p := range params[1:] {
+			uri = fmt.Sprintf("%s&%s=%s", uri, p.Key, p.Value)
+		}
 	}
 
 	uri = strings.Replace(uri, "//", "/", -1)
