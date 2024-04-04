@@ -185,13 +185,15 @@ func SetDDIAPI() func(*Client) {
 	return func(c *Client) { c.DDI = true }
 }
 
+// Param is a container struct which holds a `Key` and `Value` field corresponding to the values of a URL parameter. 
 type Param struct {
 	Key, Value string
 }
 
 // Do satisfies the Doer interface. resp will be nil if a non-HTTP error
 // occurs, otherwise it is available for inspection when the error reflects a
-// non-2XX response.
+// non-2XX response. It accepts a variadic number of optional URL parameters to
+// supply to the request. URL parameters are of type `rest.Param`.
 func (c Client) Do(req *http.Request, v interface{}, params ...Param) (*http.Response, error) {
 	q := req.URL.Query()
 	for _, p := range params {
@@ -237,7 +239,9 @@ type NextFunc func(v *interface{}, uri string) (*http.Response, error)
 // DoWithPagination Does, and follows Link headers for pagination. The returned
 // Response is from the last URI visited - either the last page, or one that
 // responded with a non-2XX status. If a non-HTTP error occurs, resp will be
-// nil.
+// nil. It accepts a variadic number of optional URL parameters to supply to
+// the underlying `.Do()` method request(s). URL parameters are of type
+// `rest.Param`.
 func (c Client) DoWithPagination(req *http.Request, v interface{}, f NextFunc, params ...Param) (*http.Response, error) {
 	resp, err := c.Do(req, v, params...)
 	if err != nil {
