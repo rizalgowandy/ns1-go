@@ -91,6 +91,7 @@ type Client struct {
 	Network           *NetworkService
 	GlobalIPWhitelist *GlobalIPWhitelistService
 	Datasets          *DatasetsService
+	Activity          *ActivityService
 }
 
 // NewClient constructs and returns a reference to an instantiated Client.
@@ -139,6 +140,7 @@ func NewClient(httpClient Doer, options ...func(*Client)) *Client {
 	c.Network = (*NetworkService)(&c.common)
 	c.GlobalIPWhitelist = (*GlobalIPWhitelistService)(&c.common)
 	c.Datasets = (*DatasetsService)(&c.common)
+	c.Activity = (*ActivityService)(&c.common)
 
 	for _, option := range options {
 		option(c)
