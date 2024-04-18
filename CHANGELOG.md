@@ -1,3 +1,10 @@
+## 2.10.0 (April 18th, 2024)
+
+FEATURES:
+
+* Adds support for listing account activity
+* Adds support for setting URL parameters on client requests
+
 ## 2.9.1 (April 3rd, 2024)
 
 BUG FIXES:
