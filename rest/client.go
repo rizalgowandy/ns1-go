@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -14,7 +13,7 @@ import (
 )
 
 const (
-	clientVersion = "2.10.0"
+	clientVersion = "2.11.0"
 
 	defaultEndpoint               = "https://api.nsone.net/v1/"
 	defaultShouldFollowPagination = true
@@ -62,36 +61,38 @@ type Client struct {
 	common service // Reuse a single struct instead of allocating one for each service on the heap.
 
 	// Services used for communicating with different components of the NS1 API.
-	APIKeys           *APIKeysService
-	DataFeeds         *DataFeedsService
-	DataSources       *DataSourcesService
-	Jobs              *JobsService
-	MonitorRegions    *MonitorRegionsService
-	PulsarJobs        *PulsarJobsService
-	Notifications     *NotificationsService
-	Records           *RecordsService
-	Applications      *ApplicationsService
-	RecordSearch      *RecordSearchService
-	ZoneSearch        *ZoneSearchService
-	Settings          *SettingsService
-	Stats             *StatsService
-	Teams             *TeamsService
-	Users             *UsersService
-	Warnings          *WarningsService
-	Zones             *ZonesService
-	Versions          *VersionsService
-	DNSSEC            *DNSSECService
-	IPAM              *IPAMService
-	ScopeGroup        *ScopeGroupService
-	Scope             *ScopeService
-	Reservation       *ReservationService
-	OptionDef         *OptionDefService
-	TSIG              *TsigService
-	View              *DNSViewService
-	Network           *NetworkService
-	GlobalIPWhitelist *GlobalIPWhitelistService
-	Datasets          *DatasetsService
-	Activity          *ActivityService
+	APIKeys              *APIKeysService
+	DataFeeds            *DataFeedsService
+	DataSources          *DataSourcesService
+	Jobs                 *JobsService
+	MonitorRegions       *MonitorRegionsService
+	PulsarJobs           *PulsarJobsService
+	Notifications        *NotificationsService
+	Records              *RecordsService
+	Applications         *ApplicationsService
+	RecordSearch         *RecordSearchService
+	ZoneSearch           *ZoneSearchService
+	Settings             *SettingsService
+	Stats                *StatsService
+	Teams                *TeamsService
+	Users                *UsersService
+	Warnings             *WarningsService
+	Zones                *ZonesService
+	Versions             *VersionsService
+	DNSSEC               *DNSSECService
+	IPAM                 *IPAMService
+	ScopeGroup           *ScopeGroupService
+	Scope                *ScopeService
+	Reservation          *ReservationService
+	OptionDef            *OptionDefService
+	TSIG                 *TsigService
+	View                 *DNSViewService
+	Network              *NetworkService
+	GlobalIPWhitelist    *GlobalIPWhitelistService
+	Datasets             *DatasetsService
+	Activity             *ActivityService
+	Redirects            *RedirectService
+	RedirectCertificates *RedirectCertificateService
 }
 
 // NewClient constructs and returns a reference to an instantiated Client.
@@ -141,6 +142,8 @@ func NewClient(httpClient Doer, options ...func(*Client)) *Client {
 	c.GlobalIPWhitelist = (*GlobalIPWhitelistService)(&c.common)
 	c.Datasets = (*DatasetsService)(&c.common)
 	c.Activity = (*ActivityService)(&c.common)
+	c.Redirects = (*RedirectService)(&c.common)
+	c.RedirectCertificates = (*RedirectCertificateService)(&c.common)
 
 	for _, option := range options {
 		option(c)
@@ -187,7 +190,7 @@ func SetDDIAPI() func(*Client) {
 	return func(c *Client) { c.DDI = true }
 }
 
-// Param is a container struct which holds a `Key` and `Value` field corresponding to the values of a URL parameter. 
+// Param is a container struct which holds a `Key` and `Value` field corresponding to the values of a URL parameter.
 type Param struct {
 	Key, Value string
 }
@@ -316,7 +319,7 @@ func CheckResponse(resp *http.Response) error {
 
 	restErr := &Error{Resp: resp}
 
-	msgBody, err := ioutil.ReadAll(resp.Body)
+	msgBody, err := io.ReadAll(resp.Body)
 	if err != nil {
 		return err
 	}
