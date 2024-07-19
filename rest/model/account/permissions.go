@@ -58,6 +58,9 @@ type PermissionsMonitoring struct {
 	ManageLists bool `json:"manage_lists"`
 	ManageJobs  bool `json:"manage_jobs"`
 	ViewJobs    bool `json:"view_jobs"`
+	CreateJobs  bool `json:"create_jobs"`
+	UpdateJobs  bool `json:"update_jobs"`
+	DeleteJobs  bool `json:"delete_jobs"`
 }
 
 // PermissionsDHCP wraps a User's "permissions.dhcp" attribute for DDI.

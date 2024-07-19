@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	clientVersion = "2.11.0"
+	clientVersion = "2.12.0"
 
 	defaultEndpoint               = "https://api.nsone.net/v1/"
 	defaultShouldFollowPagination = true

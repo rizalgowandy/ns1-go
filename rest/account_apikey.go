@@ -66,6 +66,14 @@ func (s *APIKeysService) Create(a *account.APIKey) (*http.Response, error) {
 		err error
 	)
 
+	// Replace `manage_jobs` with the new split permissions
+	if a != nil && a.Permissions.Monitoring.ManageJobs {
+		a.Permissions.Monitoring.ManageJobs = false
+		a.Permissions.Monitoring.CreateJobs = true
+		a.Permissions.Monitoring.UpdateJobs = true
+		a.Permissions.Monitoring.DeleteJobs = true
+	}
+
 	// If this is DDI then the permissions need to be transformed to DDI-compatible permissions.
 	if s.client.DDI && a != nil {
 		ddiAPIKey := apiKeyToDDIAPIKey(a)
@@ -105,6 +113,14 @@ func (s *APIKeysService) Update(a *account.APIKey) (*http.Response, error) {
 		req *http.Request
 		err error
 	)
+
+	// Replace `manage_jobs` with the new split permissions
+	if a != nil && a.Permissions.Monitoring.ManageJobs {
+		a.Permissions.Monitoring.ManageJobs = false
+		a.Permissions.Monitoring.CreateJobs = true
+		a.Permissions.Monitoring.UpdateJobs = true
+		a.Permissions.Monitoring.DeleteJobs = true
+	}
 
 	// If this is DDI then the permissions need to be transformed to DDI-compatible permissions.
 	if s.client.DDI && a != nil {

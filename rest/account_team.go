@@ -64,6 +64,14 @@ func (s *TeamsService) Create(t *account.Team) (*http.Response, error) {
 		err error
 	)
 
+	// Replace `manage_jobs` with the new split permissions
+	if t != nil && t.Permissions.Monitoring.ManageJobs {
+		t.Permissions.Monitoring.ManageJobs = false
+		t.Permissions.Monitoring.CreateJobs = true
+		t.Permissions.Monitoring.UpdateJobs = true
+		t.Permissions.Monitoring.DeleteJobs = true
+	}
+
 	// If this is DDI then the permissions need to be transformed to DDI-compatible permissions.
 	if s.client.DDI && t != nil {
 		ddiTeam := teamToDDITeam(t)
@@ -103,6 +111,14 @@ func (s *TeamsService) Update(t *account.Team) (*http.Response, error) {
 		req *http.Request
 		err error
 	)
+
+	// Replace `manage_jobs` with the new split permissions
+	if t != nil && t.Permissions.Monitoring.ManageJobs {
+		t.Permissions.Monitoring.ManageJobs = false
+		t.Permissions.Monitoring.CreateJobs = true
+		t.Permissions.Monitoring.UpdateJobs = true
+		t.Permissions.Monitoring.DeleteJobs = true
+	}
 
 	// If this is DDI then the permissions need to be transformed to DDI-compatible permissions.
 	if s.client.DDI && t != nil {
