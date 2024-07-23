@@ -14,65 +14,33 @@ import (
 )
 
 func TestCreateTeam(t *testing.T) {
-	t.Run("with manage_jobs set to true", func(t *testing.T) {
-		ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			b, err := ioutil.ReadAll(r.Body)
-			require.NoError(t, err)
-
-			var tm account.Team
-			require.NoError(t, json.Unmarshal(b, &tm))
-			assert.Nil(t, tm.Permissions.Security)
-			assert.Nil(t, tm.Permissions.DHCP)
-			assert.Nil(t, tm.Permissions.IPAM)
-			assert.False(t, tm.Permissions.Monitoring.ManageJobs)
-			assert.True(t, tm.Permissions.Monitoring.CreateJobs)
-			assert.True(t, tm.Permissions.Monitoring.UpdateJobs)
-			assert.True(t, tm.Permissions.Monitoring.DeleteJobs)
-
-			w.Write(b)
-		}))
-		defer ts.Close()
-		c := NewClient(nil, SetEndpoint(ts.URL))
-
-		tm := &account.Team{
-			ID:          "id-1",
-			Name:        "team-1",
-			Permissions: account.PermissionsMap{Monitoring: account.PermissionsMonitoring{ManageJobs: true}},
-		}
-
-		_, err := c.Teams.Create(tm)
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		b, err := ioutil.ReadAll(r.Body)
 		require.NoError(t, err)
-	})
 
-	t.Run("with manage_jobs not set", func(t *testing.T) {
-		ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			b, err := ioutil.ReadAll(r.Body)
-			require.NoError(t, err)
+		var tm account.Team
+		require.NoError(t, json.Unmarshal(b, &tm))
+		assert.Nil(t, tm.Permissions.Security)
+		assert.Nil(t, tm.Permissions.DHCP)
+		assert.Nil(t, tm.Permissions.IPAM)
+		assert.False(t, tm.Permissions.Monitoring.ManageJobs)
+		assert.False(t, tm.Permissions.Monitoring.CreateJobs)
+		assert.False(t, tm.Permissions.Monitoring.UpdateJobs)
+		assert.False(t, tm.Permissions.Monitoring.DeleteJobs)
 
-			var tm account.Team
-			require.NoError(t, json.Unmarshal(b, &tm))
-			assert.Nil(t, tm.Permissions.Security)
-			assert.Nil(t, tm.Permissions.DHCP)
-			assert.Nil(t, tm.Permissions.IPAM)
-			assert.False(t, tm.Permissions.Monitoring.ManageJobs)
-			assert.False(t, tm.Permissions.Monitoring.CreateJobs)
-			assert.False(t, tm.Permissions.Monitoring.UpdateJobs)
-			assert.False(t, tm.Permissions.Monitoring.DeleteJobs)
+		w.Write(b)
+	}))
+	defer ts.Close()
+	c := NewClient(nil, SetEndpoint(ts.URL))
 
-			w.Write(b)
-		}))
-		defer ts.Close()
-		c := NewClient(nil, SetEndpoint(ts.URL))
+	tm := &account.Team{
+		ID:          "id-1",
+		Name:        "team-1",
+		Permissions: account.PermissionsMap{},
+	}
 
-		tm := &account.Team{
-			ID:          "id-1",
-			Name:        "team-1",
-			Permissions: account.PermissionsMap{},
-		}
-
-		_, err := c.Teams.Create(tm)
-		require.NoError(t, err)
-	})
+	_, err := c.Teams.Create(tm)
+	require.NoError(t, err)
 }
 
 func TestCreateDDITeam(t *testing.T) {

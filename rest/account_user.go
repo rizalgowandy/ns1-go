@@ -64,14 +64,6 @@ func (s *UsersService) Create(u *account.User) (*http.Response, error) {
 		err error
 	)
 
-	// Replace `manage_jobs` with the new split permissions
-	if u != nil && u.Permissions.Monitoring.ManageJobs {
-		u.Permissions.Monitoring.ManageJobs = false
-		u.Permissions.Monitoring.CreateJobs = true
-		u.Permissions.Monitoring.UpdateJobs = true
-		u.Permissions.Monitoring.DeleteJobs = true
-	}
-
 	// If this is DDI then the permissions need to be transformed to DDI-compatible permissions.
 	if s.client.DDI && u != nil {
 		ddiUser := userToDDIUser(u)
@@ -111,14 +103,6 @@ func (s *UsersService) Update(u *account.User) (*http.Response, error) {
 		req *http.Request
 		err error
 	)
-
-	// Replace `manage_jobs` with the new split permissions
-	if u != nil && u.Permissions.Monitoring.ManageJobs {
-		u.Permissions.Monitoring.ManageJobs = false
-		u.Permissions.Monitoring.CreateJobs = true
-		u.Permissions.Monitoring.UpdateJobs = true
-		u.Permissions.Monitoring.DeleteJobs = true
-	}
 
 	// If this is DDI then the permissions need to be transformed to DDI-compatible permissions.
 	if s.client.DDI && u != nil {
