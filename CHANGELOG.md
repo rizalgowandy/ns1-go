@@ -1,3 +1,9 @@
+## 2.12.0 (Jul 19th, 2024)
+
+FEATURES:
+
+* Adds support for new split monitoring permissions create_jobs, update_jobs and delete_jobs
+
 ## 2.11.0 (May 23rd, 2024)
 
 FEATURES:

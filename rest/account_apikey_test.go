@@ -9,6 +9,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
 	"gopkg.in/ns1/ns1-go.v2/rest/model/account"
 )
 
@@ -22,6 +23,10 @@ func TestCreateAPIKey(t *testing.T) {
 		assert.Nil(t, k.Permissions.Security)
 		assert.Nil(t, k.Permissions.DHCP)
 		assert.Nil(t, k.Permissions.IPAM)
+		assert.False(t, k.Permissions.Monitoring.ManageJobs)
+		assert.False(t, k.Permissions.Monitoring.CreateJobs)
+		assert.False(t, k.Permissions.Monitoring.UpdateJobs)
+		assert.False(t, k.Permissions.Monitoring.DeleteJobs)
 
 		_, err = w.Write(b)
 		require.NoError(t, err)

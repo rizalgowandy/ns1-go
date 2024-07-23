@@ -9,6 +9,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
+
 	"gopkg.in/ns1/ns1-go.v2/rest/model/account"
 )
 
@@ -22,6 +23,10 @@ func TestCreateTeam(t *testing.T) {
 		assert.Nil(t, tm.Permissions.Security)
 		assert.Nil(t, tm.Permissions.DHCP)
 		assert.Nil(t, tm.Permissions.IPAM)
+		assert.False(t, tm.Permissions.Monitoring.ManageJobs)
+		assert.False(t, tm.Permissions.Monitoring.CreateJobs)
+		assert.False(t, tm.Permissions.Monitoring.UpdateJobs)
+		assert.False(t, tm.Permissions.Monitoring.DeleteJobs)
 
 		w.Write(b)
 	}))
