@@ -3,6 +3,7 @@
 FEATURES:
 
 * Adds support for new split monitoring permissions create_jobs, update_jobs and delete_jobs
+* Remove DDI (DHCP & IPAM) code
 
 ## 2.11.0 (May 23rd, 2024)
 
