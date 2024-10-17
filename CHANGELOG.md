@@ -1,3 +1,9 @@
+## 2.12.2 (October 17th, 2024)
+
+BUG FIXES:
+
+* Allowing to wipe the record regions
+
 ## 2.12.1 (Sep 23rd, 2024)
 
 BUG FIXES:
