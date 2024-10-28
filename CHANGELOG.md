@@ -1,3 +1,9 @@
+## 2.13.0 (Oct 28th, 2024)
+
+FEATURES:
+
+* Adds support for alerts
+
 ## 2.12.2 (October 17th, 2024)
 
 BUG FIXES:
