@@ -15,7 +15,7 @@ type mockAlertListResponse struct {
 	TotalResults *int64            `json:"total_results,omitempty"`
 }
 
-const alertPath = "../alerting/v1beta1/alerts"
+const alertPath = "../alerting/v1/alerts"
 
 // AddAlertListTestCase sets up a test case for the api.Client.Alert.List()
 // function

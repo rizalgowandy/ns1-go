@@ -13,9 +13,9 @@ import (
 )
 
 const (
-	clientVersion = "2.12.2"
+	clientVersion = "2.13.0"
 
-	defaultBase                   = "http://localhost:80"
+	defaultBase                   = "https://api.nsone.net"
 	defaultEndpoint               = defaultBase + "/v1/"
 	defaultShouldFollowPagination = true
 	defaultUserAgent              = "go-ns1/" + clientVersion

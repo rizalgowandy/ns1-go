@@ -45,7 +45,7 @@ func TestAlert(t *testing.T) {
 			defer mock.ClearTestCases()
 
 			linkHeader := http.Header{}
-			linkHeader.Set("Link", `</alerting/v1beta1/alerts?next=`+*alertList[1].Name+`>; rel="next"`)
+			linkHeader.Set("Link", `</alerting/v1/alerts?next=`+*alertList[1].Name+`>; rel="next"`)
 			require.Nil(t, mock.AddAlertListTestCase("", nil, linkHeader, alertList[0:1]))
 			require.Nil(t, mock.AddAlertListTestCase("next="+*alertList[1].Name, nil, nil, alertList[2:3]))
 

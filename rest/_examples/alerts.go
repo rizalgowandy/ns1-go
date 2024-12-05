@@ -31,7 +31,6 @@ func init() {
 
 func prettyPrint(header string, v interface{}) {
 	fmt.Println(header)
-	fmt.Printf("%#v \n", v)
 	b, _ := json.MarshalIndent(v, "", "  ")
 	fmt.Println(string(b))
 }
@@ -66,6 +65,11 @@ func main() {
 
 	z := dns.NewZone(domain)
 	z.NxTTL = 3600
+	z.Secondary = &dns.ZoneSecondary{
+		Enabled:     true,
+		PrimaryIP:   "127.0.0.1",
+		PrimaryPort: 67,
+	}
 	_, err = client.Zones.Create(z)
 	if err != nil {
 		// Ignore if zone already exists
@@ -75,10 +79,10 @@ func main() {
 			log.Println("Zone already exists, continuing...")
 		}
 	}
-
 	prettyPrint("Zone:", z)
-	fmt.Printf("Creating alert...\n")
+
 	alert := alerting.NewZoneAlert("myalerttest.com - transfer failed", "transfer_failed", []string{webhookList.ID}, []string{domain})
+	prettyPrint("Creating alert: ", alert)
 	_, err = client.Alerts.Create(alert)
 	if err != nil {
 		if err == api.ErrAlertExists {

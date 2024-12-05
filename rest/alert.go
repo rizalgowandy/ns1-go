@@ -13,7 +13,7 @@ type AlertsService service
 
 // The base for the alerting api relative to /v1
 // client.NewRequest will call ResolveReference and remove /v1/../
-const alertingRelativeBase = "../alerting/v1beta1"
+const alertingRelativeBase = "../alerting/v1"
 
 type alertListResponse struct {
 	Limit        *int64            `json:"limit,omitempty"`
