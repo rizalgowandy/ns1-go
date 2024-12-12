@@ -22,8 +22,6 @@ var (
 	recordAlertType string = "record"
 )
 
-// TODO - Allow zones/notifier lists to be passed as structs?
-//   - Multiple constructors?
 func NewZoneAlert(alertName string, subtype string, notifierListIds []string, zoneNames []string) *Alert {
 	return &Alert{
 		Name:            &alertName,

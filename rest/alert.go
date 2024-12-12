@@ -162,7 +162,7 @@ func (s *AlertsService) Replace(alert *alerting.Alert) (*http.Response, error) {
 	return resp, nil
 }
 
-// Delete immediately deletes an existing alert.
+// Delete deletes an existing alert.
 //
 // NS1 API docs: https://ns1.com/api/#alert-alertid-delete
 func (s *AlertsService) Delete(alertID string) (*http.Response, error) {

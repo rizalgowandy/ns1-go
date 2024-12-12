@@ -138,7 +138,6 @@ func TestAlert(t *testing.T) {
 			compareAlerts(t, alertResponse, &alertToCreate)
 		})
 
-		// TODO Add test for error response when updating fields that can't be changed.
 		t.Run("Error Duplicate Name", func(t *testing.T) {
 			defer mock.ClearTestCases()
 
