@@ -62,7 +62,7 @@ func main() {
 	}
 
 	// Add an A record with a single static answer.
-	orchidRec := dns.NewRecord(domain, "orchid", "A")
+	orchidRec := dns.NewRecord(domain, "orchid", "A", nil, nil)
 	orchidRec.AddAnswer(dns.NewAv4Answer("2.2.2.2"))
 	_, err = client.Records.Create(orchidRec)
 	if err != nil {
@@ -98,7 +98,7 @@ func main() {
 	fmt.Println(string(bRec))
 
 	// Add an A record with two static answers.
-	honeyRec := dns.NewRecord(domain, "honey", "A")
+	honeyRec := dns.NewRecord(domain, "honey", "A", nil, nil)
 	honeyRec.Answers = []*dns.Answer{
 		dns.NewAv4Answer("1.2.3.4"),
 		dns.NewAv4Answer("5.6.7.8"),
@@ -114,7 +114,7 @@ func main() {
 	}
 
 	// Add a cname
-	potRec := dns.NewRecord(domain, "pot", "CNAME")
+	potRec := dns.NewRecord(domain, "pot", "CNAME", nil, nil)
 	potRec.AddAnswer(dns.NewCNAMEAnswer("honey.test.com"))
 	_, err = client.Records.Create(potRec)
 	if err != nil {
@@ -127,7 +127,7 @@ func main() {
 	}
 
 	// Add a MX with two answers, priority 5 and 10
-	mailRec := dns.NewRecord(domain, "mail", "MX")
+	mailRec := dns.NewRecord(domain, "mail", "MX", nil, nil)
 	mailRec.Answers = []*dns.Answer{
 		dns.NewMXAnswer(5, "mail1.test.com"),
 		dns.NewMXAnswer(10, "mail2.test.com"),
@@ -143,7 +143,7 @@ func main() {
 	}
 
 	// Add a AAAA, specify ttl of 300 seconds
-	aaaaRec := dns.NewRecord(domain, "honey6", "AAAA")
+	aaaaRec := dns.NewRecord(domain, "honey6", "AAAA", nil, nil)
 	aaaaRec.TTL = 300
 	aaaaRec.AddAnswer(dns.NewAv6Answer("2607:f8b0:4006:806::1010"))
 	_, err = client.Records.Create(aaaaRec)
@@ -159,7 +159,7 @@ func main() {
 	// Add an A record using full answer format to specify 2 answers with meta data.
 	// ensure edns-client-subnet is in use, and add two filters: geotarget_country,
 	// and select_first_n, which has a filter config option N set to 1.
-	bumbleRec := dns.NewRecord(domain, "bumble", "A")
+	bumbleRec := dns.NewRecord(domain, "bumble", "A", nil, nil)
 
 	usAns := dns.NewAv4Answer("1.1.1.1")
 	usAns.Meta.Up = false

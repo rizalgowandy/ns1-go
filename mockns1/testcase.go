@@ -5,9 +5,11 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"net/url"
 	"strings"
 
 	"github.com/stretchr/testify/assert"
+	api "gopkg.in/ns1/ns1-go.v2/rest"
 )
 
 type testCase struct {
@@ -29,6 +31,7 @@ func (s *Service) AddTestCase(
 	method, uri string, returnStatus int,
 	requestHeaders, responseHeaders http.Header,
 	requestBody, responseBody interface{},
+	params ...api.Param,
 ) error {
 	s.stopTimer()
 	defer s.startTimer()
@@ -36,6 +39,23 @@ func (s *Service) AddTestCase(
 	if !strings.HasPrefix(uri, "/v1/") {
 		uri = "/v1/" + uri
 	}
+
+	baseUri, _ := url.Parse("/")
+	rel, uriErr := url.Parse(uri)
+	if uriErr != nil {
+		return fmt.Errorf("could not parse testcase uri")
+	}
+
+	uri = baseUri.ResolveReference(rel).RequestURI()
+
+	if len(params) > 0 {
+		uri = fmt.Sprintf("%s?%s=%s", uri, params[0].Key, params[0].Value)
+
+		for _, p := range params[1:] {
+			uri = fmt.Sprintf("%s&%s=%s", uri, p.Key, p.Value)
+		}
+	}
+
 	uri = strings.Replace(uri, "//", "/", -1)
 
 	tc := &testCase{

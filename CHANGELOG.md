@@ -1,7 +1,100 @@
+## 2.13.0 (Dec 5th, 2024)
+
+FEATURES:
+
+* Adds support for alerts
+
+## 2.12.2 (October 17th, 2024)
+
+BUG FIXES:
+
+* Allowing to wipe the record regions
+
+## 2.12.1 (Sep 23rd, 2024)
+
+BUG FIXES:
+
+* Adds "feeds" field to the Answer struct
+* Adds "destinations" field to the Feed struct
+
+## 2.12.0 (Jul 19th, 2024)
+
+FEATURES:
+
+* Adds support for new split monitoring permissions create_jobs, update_jobs and delete_jobs
+* Remove DDI (DHCP & IPAM) code
+
+## 2.11.0 (May 23rd, 2024)
+
+FEATURES:
+
+* Adds support for creating and modifying HTTP/HTTPS redirects
+
+## 2.10.0 (April 18th, 2024)
+
+FEATURES:
+
+* Adds support for listing account activity
+* Adds support for setting URL parameters on client requests
+
+## 2.9.1 (April 3rd, 2024)
+
+BUG FIXES:
+
+* Re-add `omitempty` to both `tags` and `blocked_tags` as the limitation in update 2.7.12 has been lifted
+
+## 2.9.0 (March 7th, 2024)
+
+FEATURES:
+
+* Adds support for listing available monitoring regions
+
+## 2.8.0 (February 14th, 2024)
+
+FEATURES:
+
+* Adds support for Datasets
+
+## 2.7.13 (October 12th, 2023)
+
+BUG FIXES:
+
+* Remove `omitempty` from `tags` to allow POST without `tags` after update 2.7.12
+
+## 2.7.12 (October 11th, 2023)
+
+BUG FIXES:
+
+* Remove `omitempty` from `blocked_tags` to allow `tag` POST
+* Fix `tag` creation and update
+
+## 2.7.11 (October 5th, 2023)
+
+BUG FIXES:
+
+* Remove `omitempty` from filters to allow removal of filters
+
+## 2.7.10 (September 29th, 2023)
+
+FEATURES:
+
+* Adds support for Override Address Records
+
+## 2.7.9 (September 18th, 2023)
+
+FEATURES:
+
+* Adds support for global IP allow lists
+
+## 2.7.8 (July 27th, 2023)
+BUG FIXES:
+
+* Removes `id` field from monitoring job creation URL
+
 ## 2.7.6 (April 28, 2023)
 BUG FIXES:
 
-* **Breaking** Various name changes to be more idiomatic 
+* **Breaking** Various name changes to be more idiomatic
     *  `DNSView`        -> `View`
     *  `PulsarJob`      -> `Job`
     *  `Created_at`     -> `CreatedAt`

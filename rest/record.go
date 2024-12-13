@@ -6,7 +6,6 @@ import (
 	"net/http"
 
 	"gopkg.in/ns1/ns1-go.v2/rest/model/dns"
-	"gopkg.in/ns1/ns1-go.v2/rest/model/filter"
 )
 
 // RecordsService handles 'zones/ZONE/DOMAIN/TYPE' endpoint.
@@ -26,17 +25,13 @@ func (s *RecordsService) Get(zone, domain, t string) (*dns.Record, *http.Respons
 	var r dns.Record
 	resp, err := s.client.Do(req, &r)
 	if err != nil {
-		switch err.(type) {
+		switch err := err.(type) {
 		case *Error:
-			if err.(*Error).Message == "record not found" {
+			if err.Message == "record not found" {
 				return nil, resp, ErrRecordMissing
 			}
 		}
 		return nil, resp, err
-	}
-
-	if r.Filters == nil {
-		r.Filters = make([]*filter.Filter, 0)
 	}
 
 	return &r, resp, nil
@@ -57,9 +52,9 @@ func (s *RecordsService) Create(r *dns.Record) (*http.Response, error) {
 	// Update record fields with data from api(ensure consistent)
 	resp, err := s.client.Do(req, &r)
 	if err != nil {
-		switch err.(type) {
+		switch err := err.(type) {
 		case *Error:
-			switch err.(*Error).Message {
+			switch err.Message {
 			case "zone not found":
 				return resp, ErrZoneMissing
 			case "record already exists":
@@ -87,9 +82,9 @@ func (s *RecordsService) Update(r *dns.Record) (*http.Response, error) {
 	// Update records fields with data from api(ensure consistent)
 	resp, err := s.client.Do(req, &r)
 	if err != nil {
-		switch err.(type) {
+		switch err := err.(type) {
 		case *Error:
-			switch err.(*Error).Message {
+			switch err.Message {
 			case "zone not found":
 				return resp, ErrZoneMissing
 			case "record not found":
@@ -117,9 +112,9 @@ func (s *RecordsService) Delete(zone string, domain string, t string) (*http.Res
 
 	resp, err := s.client.Do(req, nil)
 	if err != nil {
-		switch err.(type) {
+		switch err := err.(type) {
 		case *Error:
-			if err.(*Error).Message == "record not found" {
+			if err.Message == "record not found" {
 				return resp, ErrRecordMissing
 			}
 		}
