@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"net/url"
 	"strings"
 
 	"github.com/stretchr/testify/assert"
@@ -38,6 +39,14 @@ func (s *Service) AddTestCase(
 	if !strings.HasPrefix(uri, "/v1/") {
 		uri = "/v1/" + uri
 	}
+
+	baseUri, _ := url.Parse("/")
+	rel, uriErr := url.Parse(uri)
+	if uriErr != nil {
+		return fmt.Errorf("could not parse testcase uri")
+	}
+
+	uri = baseUri.ResolveReference(rel).RequestURI()
 
 	if len(params) > 0 {
 		uri = fmt.Sprintf("%s?%s=%s", uri, params[0].Key, params[0].Value)

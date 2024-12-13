@@ -13,9 +13,10 @@ import (
 )
 
 const (
-	clientVersion = "2.12.2"
+	clientVersion = "2.13.0"
 
-	defaultEndpoint               = "https://api.nsone.net/v1/"
+	defaultBase                   = "https://api.nsone.net"
+	defaultEndpoint               = defaultBase + "/v1/"
 	defaultShouldFollowPagination = true
 	defaultUserAgent              = "go-ns1/" + clientVersion
 
@@ -85,6 +86,7 @@ type Client struct {
 	Activity             *ActivityService
 	Redirects            *RedirectService
 	RedirectCertificates *RedirectCertificateService
+	Alerts               *AlertsService
 }
 
 // NewClient constructs and returns a reference to an instantiated Client.
@@ -131,6 +133,7 @@ func NewClient(httpClient Doer, options ...func(*Client)) *Client {
 	c.Activity = (*ActivityService)(&c.common)
 	c.Redirects = (*RedirectService)(&c.common)
 	c.RedirectCertificates = (*RedirectCertificateService)(&c.common)
+	c.Alerts = (*AlertsService)(&c.common)
 
 	for _, option := range options {
 		option(c)
